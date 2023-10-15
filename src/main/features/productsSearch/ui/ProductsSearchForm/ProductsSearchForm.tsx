@@ -1,8 +1,10 @@
 import styles from './productsSearchForm.module.scss';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 interface ISearchInput {
     searchInput: string;
@@ -16,8 +18,24 @@ const ProductsSearchForm: FC<ProductsSearchFormProps> = (props) => {
     const { register, handleSubmit } = useForm<ISearchInput>();
     const [fucus, setFocus] = React.useState(false);
 
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    // now you got a read/write object
+    const current = new URLSearchParams(Array.from(searchParams.entries())); // -> has to use this form
+
+    // update as necessary
+
     const submitSearch: SubmitHandler<ISearchInput> = (data) => {
-        console.log(data);
+        current.set('selected', data.searchInput);
+
+        // cast to string
+        const search = current.toString();
+        // or const query = `${'?'.repeat(search.length && 1)}${search}`;
+        const query = search ? `?${search}` : '';
+
+        router.push(`${pathname}${query}`);
     };
 
     const onBlurHandler = () => {
@@ -46,4 +64,5 @@ const ProductsSearchForm: FC<ProductsSearchFormProps> = (props) => {
     );
 };
 
+const useDropDown = (value: string) => {};
 export default ProductsSearchForm;
