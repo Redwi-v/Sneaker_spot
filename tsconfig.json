@@ -15,7 +15,13 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "~screens/*": ["./src/main/screens/*"],
+      "~widgets/*": ["./src/main/widgets/*"],
+      "~entities/*": ["./src/main/entities/*"],
+      "~features/*": ["./src/main/features/*"],
+      "~shared/*": ["./src/main/shared/*"],
+
+      "@/*": ["./src/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

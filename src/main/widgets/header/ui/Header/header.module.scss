@@ -1,0 +1,15 @@
+.header {
+    @apply flex px-6 py-5 items-center;
+
+    .headerMenu {
+        @apply ml-20;
+    }
+
+    .headerSearch {
+        @apply ml-28;
+    }
+
+    .headerCart {
+        @apply ml-auto;
+    }
+}

@@ -1,0 +1,6 @@
+.menuList {
+    @apply flex gap-5 font-bold;
+    .menuItem {
+        @apply hover:text-orange transition-colors duration-100;
+    }
+}

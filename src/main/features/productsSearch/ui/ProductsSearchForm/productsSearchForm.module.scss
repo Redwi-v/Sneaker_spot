@@ -1,0 +1,17 @@
+.form {
+    @apply flex bg-brown rounded-2xl  items-center opacity-70 transition-opacity duration-150 border;
+    border-color: transparent;
+
+    .input {
+        @apply border-none outline-none px-4 text-white placeholder:text-white placeholder:text-opacity-50;
+        background: none;
+    }
+
+    .button {
+        @apply h-8 pr-2;
+    }
+}
+
+.focus {
+    @apply opacity-100 border-brown;
+}

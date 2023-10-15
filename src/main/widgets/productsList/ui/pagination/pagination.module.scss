@@ -1,0 +1,14 @@
+.pagination_list {
+    @apply flex justify-center gap-3 mt-10 items-center;
+
+    .link {
+        @apply flex justify-center items-center  w-12 h-12 bg-darkOrange text-white font-bold hover:bg-lightBrown transition-colors delay-75;
+    }
+
+    .activeLink {
+        @apply w-14 h-14;
+    }
+}
+.pages_counter {
+    @apply flex justify-center text-darkOrange pt-3;
+}

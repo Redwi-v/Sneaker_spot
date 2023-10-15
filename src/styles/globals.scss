@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;700&display=swap');
+
+body {
+    @apply snap-proximity text-xl;
+    background: rgb(222, 129, 60);
+    background: radial-gradient(circle, #de7b27 30%, #faddc4 52%);
+    font-family: 'Nunito', sans-serif;
+}
+
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background-color: #e4e4e4;
+    border-radius: 100px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #fbecc6;
+    border-radius: 100px;
+}
+
+body {
+    @apply text-blue;
+}
