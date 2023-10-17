@@ -1,10 +1,10 @@
 import styles from './productsSearchForm.module.scss';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import React, { ChangeEvent, FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import Image from 'next/image';
+import { useFilters, useFiltersSelector } from '~entities/filters';
 import { useRouter } from 'next/router';
-import { usePathname, useSearchParams } from 'next/navigation';
 
 interface ISearchInput {
     searchInput: string;
@@ -14,28 +14,21 @@ export interface ProductsSearchFormProps {}
 
 const ProductsSearchForm: FC<ProductsSearchFormProps> = (props) => {
     const {} = props;
+    const { setTerm } = useFilters();
 
-    const { register, handleSubmit } = useForm<ISearchInput>();
+    const { term } = useFiltersSelector();
+
+    const { register, handleSubmit, getValues, setValue } = useForm<ISearchInput>({});
+
+    useEffect(() => {
+        if (getValues('searchInput')) return;
+        setValue('searchInput', term);
+    }, [term]);
+
     const [fucus, setFocus] = React.useState(false);
 
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-
-    // now you got a read/write object
-    const current = new URLSearchParams(Array.from(searchParams.entries())); // -> has to use this form
-
-    // update as necessary
-
     const submitSearch: SubmitHandler<ISearchInput> = (data) => {
-        current.set('selected', data.searchInput);
-
-        // cast to string
-        const search = current.toString();
-        // or const query = `${'?'.repeat(search.length && 1)}${search}`;
-        const query = search ? `?${search}` : '';
-
-        router.push(`${pathname}${query}`);
+        setTerm(data.searchInput);
     };
 
     const onBlurHandler = () => {

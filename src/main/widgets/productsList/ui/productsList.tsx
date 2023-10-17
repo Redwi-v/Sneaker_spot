@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { IProduct } from '../api/productListApi';
 
 import styles from './productList.module.scss';
 import Link from 'next/link';
@@ -8,36 +7,41 @@ import Pagination from './pagination/Pagination';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { productService } from '~shared/api';
+import { IProduct, IProductData } from '~shared/api';
 
 interface ProductListProps {
-    productsList: IProduct[];
-    totalCount: number;
+    initProductsData: IProductData;
     onOnePage: number;
 }
 
 const ProductList: FC<ProductListProps> = (props) => {
-    const { productsList, totalCount, onOnePage } = props;
+    const { onOnePage, initProductsData } = props;
+    const filters = {};
 
     const page = Number(useRouter().query.page);
 
-    const res = useQuery({
-        queryKey: ['page'],
+    const { data: productsData } = useQuery({
+        queryKey: ['page', page],
+
+        initialData: initProductsData,
+        enabled: !!Object.keys(filters).length,
         queryFn: async () => {
-            const res = await productService.getPage(1, 3);
+            const res = await productService.getPage(page, onOnePage);
+
             return res;
         },
-        initialData: productsList,
     });
 
-    console.log(res.data);
-
-    if (!productsList || !productsList.length) {
+    if (!productsData || !productsData.data.length) {
         return (
             <>
                 <h1>can't load products</h1>
             </>
         );
     }
+    const { data: productsList, totalCount } = productsData;
+
+    console.log(productsList);
 
     // mappers
     const mapProducts = productsList.map((productInfo) => {

@@ -3,7 +3,7 @@ import { ProductList } from '~widgets/productsList';
 import { Filters } from '~widgets/filters';
 
 import styles from './shopScreen.module.scss';
-import { IProduct } from '~widgets/productsList/api/productListApi';
+import { IProduct } from '~shared/api';
 
 interface ShopScreenProps {
     productsList: IProduct[];
@@ -15,7 +15,7 @@ const ShopScreen: FC<ShopScreenProps> = (props) => {
         <div className={styles.shop_screen}>
             <div className={styles.shop_screen__main}>
                 <Filters />
-                <ProductList {...props} />
+                <ProductList {...props} initProductsData={{ data: props.productsList, totalCount: props.totalCount }} />
             </div>
         </div>
     );

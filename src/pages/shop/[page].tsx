@@ -40,6 +40,12 @@ export const getStaticProps: GetStaticProps<ISopPageProps> = async (context) => 
 
     const res = await productService.getPage(productsPage, itemsOnOnePage);
 
+    if (!res) {
+        return {
+            notFound: true,
+        };
+    }
+
     if (res.data.length === 0) {
         return {
             notFound: true,
@@ -55,9 +61,9 @@ export const getStaticProps: GetStaticProps<ISopPageProps> = async (context) => 
 };
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
-    const products = await productService.getPage(1, 2);
+    const res = (await productService.getPage(1, 2)) || { totalCount: 0 };
 
-    const paths = Array.from({ length: Math.ceil(+products.totalCount / itemsOnOnePage) }).map((_, i) => ({
+    const paths = Array.from({ length: Math.ceil(+res?.totalCount / itemsOnOnePage) }).map((_, i) => ({
         params: {
             page: String(i + 1),
         },

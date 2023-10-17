@@ -1,9 +1,11 @@
 import { configureStore, combineReducers, getDefaultMiddleware } from '@reduxjs/toolkit';
 import cartReducer from '~entities/cart/model/cart.slice';
 import { productListApi } from '~widgets/productsList';
+import { filtersReducer } from '~entities/filters';
 
 const reducers = combineReducers({
     cartReducer,
+    filtersReducer,
     [productListApi.reducerPath]: productListApi.reducer,
 });
 
