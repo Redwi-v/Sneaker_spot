@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 
 import styles from './pagination.module.scss';
+import { useFilters, useFiltersSelector } from '~entities/filters';
 
 interface PaginationProps {
     totalCount: number;
@@ -39,7 +40,7 @@ const Pagination: FC<PaginationProps> = (props) => {
     }
 
     const mappedPaginationLinks = pagesArray.map((pageNumber) => {
-        return <PaginationLink pageNumber={pageNumber} key={pageNumber} />;
+        return <PaginationLink query={routers.query} pageNumber={pageNumber} key={pageNumber} />;
     });
 
     return (
@@ -50,15 +51,30 @@ const Pagination: FC<PaginationProps> = (props) => {
     );
 };
 
-const PaginationLink: FC<{ pageNumber: number }> = (props) => {
+const PaginationLink: FC<{ pageNumber: number; query: any }> = (props) => {
+    const { query } = props;
+    const queryParams = { ...query };
+    delete queryParams.page;
+
     const routers = useRouter();
     const activePage = Number(routers.query.page);
 
     const isActivePage = activePage === props.pageNumber;
+    const { getActiveFilters } = useFilters();
+    const activeFilters = getActiveFilters();
+
+    const haveAnyFilters = !!Object.values(activeFilters).length;
 
     return (
         <li>
-            <Link className={`${styles.link} ${isActivePage && styles.activeLink}`} href={`/shop/${props.pageNumber}`}>
+            <Link
+                className={`${styles.link} ${isActivePage && styles.activeLink}`}
+                href={{
+                    pathname: `/shop/${props.pageNumber}`,
+                    query: queryParams,
+                }}
+                shallow={haveAnyFilters}
+            >
                 {props.pageNumber}
             </Link>
         </li>

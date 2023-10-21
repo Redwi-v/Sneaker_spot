@@ -1,30 +1,28 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { IFiltrationParams, SortingParams } from '~shared/api';
 import { useAppSelector } from '~shared/state/hooks/hooks';
 
-export enum SortingParams {
-    LOW_PRICE = 'LOW_PRICE',
-    HIGHT_PRICE = 'HIGHT_PRICE',
-    RATING = 'RATING',
-    MOST_POPULAR = 'MOST_POPULAR',
+interface IObjectKeys {
+    [key: string]: any;
 }
 
-interface IFiltersSlice {
-    term: string;
+interface IFiltersSlice extends IObjectKeys {
+    term: string | null;
     sizes: number[] | null;
     colors: number[] | null;
-    brand: string;
+    brand: string | null;
     price: number[] | null;
 
-    sorting: SortingParams;
+    sorting: SortingParams | null;
 }
 
 const initialState: IFiltersSlice = {
-    term: '',
+    term: null,
     sizes: null,
     colors: null,
-    brand: '',
+    brand: null,
     price: null,
-    sorting: SortingParams.MOST_POPULAR,
+    sorting: null,
 };
 
 const filterSlice = createSlice({
@@ -33,6 +31,12 @@ const filterSlice = createSlice({
     reducers: {
         setTerm: (state, action: PayloadAction<string>) => {
             state.term = action.payload;
+        },
+
+        setInitialFilters: (state, action: PayloadAction<IFiltrationParams>) => {
+            Object.keys(action.payload).forEach((key) => {
+                state[key] = action.payload[key];
+            });
         },
     },
 });

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { ProductList } from '~widgets/productsList';
 import { Filters } from '~widgets/filters';
 

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './productList.module.scss';
 import Link from 'next/link';
@@ -6,8 +6,8 @@ import Image from 'next/image';
 import Pagination from './pagination/Pagination';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
-import { productService } from '~shared/api';
-import { IProduct, IProductData } from '~shared/api';
+import { productService, IProduct, IProductData, IFiltrationParams } from '~shared/api';
+import { useFilters, useFiltersSelector } from '~entities/filters';
 
 interface ProductListProps {
     initProductsData: IProductData;
@@ -16,21 +16,76 @@ interface ProductListProps {
 
 const ProductList: FC<ProductListProps> = (props) => {
     const { onOnePage, initProductsData } = props;
-    const filters = {};
 
-    const page = Number(useRouter().query.page);
+    const filtersState = useFiltersSelector();
+    const router = useRouter();
+    const { getActiveFilters, setInitFilters } = useFilters();
+    const activeFilters = getActiveFilters();
 
-    const { data: productsData } = useQuery({
-        queryKey: ['page', page],
+    let routerPage = Number(router.query.page);
+
+    const haveAnyFilters = !!Object.values(activeFilters).length;
+
+    const { data: productsData, refetch } = useQuery({
+        queryKey: ['page', routerPage, filtersState],
 
         initialData: initProductsData,
-        enabled: !!Object.keys(filters).length,
+        enabled: false,
+
         queryFn: async () => {
-            const res = await productService.getPage(page, onOnePage);
+            const res = await productService.getPage(routerPage, onOnePage, activeFilters);
 
             return res;
         },
     });
+
+    const [canRefetch, setCanRefetch] = useState(false);
+    const IsInitFiltersSet = useRef(false);
+
+    const refetchWithStartFilters = () => {
+        const query = { ...router.query };
+        delete query.page;
+
+        // запрос за страницей отправиться только после редиректа и разрешит изменение страницы после уже пришедшей страницы
+        router
+            .push(
+                {
+                    pathname: '/shop/1',
+                    query,
+                },
+                undefined,
+                { shallow: true }
+            )
+            .then(() => {
+                refetch().then(() => {
+                    setCanRefetch(true);
+                });
+            });
+    };
+
+    useEffect(() => {
+        if (haveAnyFilters && !IsInitFiltersSet) {
+            refetchWithStartFilters();
+        }
+        if (IsInitFiltersSet && router.isReady) {
+            refetch().then(() => {
+                setCanRefetch(true);
+            });
+        }
+    }, [filtersState]);
+
+    useEffect(() => {
+        if (haveAnyFilters && canRefetch) {
+            refetch();
+        }
+    }, [routerPage]);
+
+    useEffect(() => {
+        if (router.isReady && !IsInitFiltersSet.current) {
+            setInitFilters();
+            IsInitFiltersSet.current = true;
+        }
+    }, [router.query]);
 
     if (!productsData || !productsData.data.length) {
         return (
@@ -39,9 +94,8 @@ const ProductList: FC<ProductListProps> = (props) => {
             </>
         );
     }
-    const { data: productsList, totalCount } = productsData;
 
-    console.log(productsList);
+    const { data: productsList, totalCount } = productsData;
 
     // mappers
     const mapProducts = productsList.map((productInfo) => {

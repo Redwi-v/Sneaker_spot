@@ -1,9 +1,9 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { ParsedUrlQuery } from 'querystring';
+import { useEffect } from 'react';
 import { ShopScreen } from '~screens/shop';
-import { productService } from '~shared/api';
+import { IProduct, productService } from '~shared/api';
 import { DefaultLayout } from '~widgets/layouts';
-import { IProduct } from '~widgets/productsList';
 
 const itemsOnOnePage = 9;
 

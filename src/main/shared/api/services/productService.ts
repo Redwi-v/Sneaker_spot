@@ -1,7 +1,24 @@
 import axiosInstance from '../config/axiosInstance';
 
-interface IFiltrationParams {
-    price: [number, number];
+export enum SortingParams {
+    LOW_PRICE = 'LOW_PRICE',
+    HIGHT_PRICE = 'HIGHT_PRICE',
+    RATING = 'RATING',
+    MOST_POPULAR = 'MOST_POPULAR',
+}
+
+interface IObjectKeys {
+    [key: string]: any;
+}
+
+export interface IFiltrationParams extends IObjectKeys {
+    price?: [number, number];
+    term?: string;
+    sizes?: number[];
+    colors?: number[];
+    brand?: string;
+
+    sorting?: SortingParams;
 }
 
 export interface IProductData {
