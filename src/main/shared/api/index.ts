@@ -2,6 +2,6 @@ import { type } from 'os';
 import productService from './services/productService';
 import { IProductData, IProduct, SortingParams, IFiltrationParams } from './services/productService';
 
-export { productService };
+export { productService, SortingParams };
 
-export type { IProductData, IProduct, SortingParams, IFiltrationParams };
+export type { IProductData, IProduct, IFiltrationParams };

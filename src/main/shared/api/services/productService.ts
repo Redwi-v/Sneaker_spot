@@ -52,6 +52,7 @@ class ProductService {
                 page,
                 take,
                 filtrationParams,
+                sorting: filtrationParams?.sorting,
             },
         });
 

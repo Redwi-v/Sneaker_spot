@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router';
 import { filtersActions, useFiltersSelector } from '../model/filtersSlice';
 import { useAppDispatch } from '~shared/state/hooks/hooks';
-import { IFiltrationParams } from '~shared/api';
-import { useEffect } from 'react';
+import { IFiltrationParams, SortingParams } from '~shared/api';
 
 const useFilters = () => {
     const AppDispatch = useAppDispatch();
@@ -34,8 +33,6 @@ const useFilters = () => {
         const query = router.query;
         const queryParams: any = {};
 
-        console.log(query);
-
         // FIXME: переделать так чтобы поля брались из слайса
         Object.keys(query).forEach((key) => {
             if (key === 'term') queryParams.term = query[key];
@@ -48,10 +45,15 @@ const useFilters = () => {
 
         AppDispatch(filtersActions.setInitialFilters(queryParams));
     };
+
+    const changeSorting = (param: SortingParams) => {
+        AppDispatch(filtersActions.changeSorting(param));
+    };
     return {
         setTerm,
         getActiveFilters,
         setInitFilters,
+        changeSorting,
     };
 };
 

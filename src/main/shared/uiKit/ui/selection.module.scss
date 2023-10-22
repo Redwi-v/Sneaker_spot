@@ -1,0 +1,15 @@
+.poopup {
+    @apply bg-brown font-extralight text-2xl;
+}
+
+.select {
+    @apply h-10  mb-3 w-80;
+    font-family: inherit;
+
+    span {
+        @apply text-2xl;
+    }
+}
+.option {
+    @apply text-xl;
+}

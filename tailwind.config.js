@@ -15,6 +15,8 @@ const constants = {
 };
 
 module.exports = {
+    important: true,
+    important: '#app',
     content: [
         './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
         './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -31,8 +33,8 @@ module.exports = {
             },
 
             gridTemplateColumns: {
-                gird_list_3: 'repeat(3, minmax(0, min-content))',
-                gird_list_4: 'repeat(4, minmax(0, min-content))',
+                gird_list_3: 'repeat(3, minmax(0, max-content))',
+                gird_list_4: 'repeat(4, minmax(0, max-content))',
             },
         },
     },

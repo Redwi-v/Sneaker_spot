@@ -1,14 +1,14 @@
 .product_list {
-    @apply grid grid-cols-gird_list_4 justify-around  px-8  gap-8 gap-x-14  w-full 
+    @apply grid grid-cols-gird_list_4 justify-between gap-8 gap-x-14 w-full 
     max-2xl:grid-cols-gird_list_3;
 
     &__content {
-        @apply w-full;
+        @apply w-full px-8;
     }
 }
 
 .product_item {
-    @apply rounded-2xl block w-72 h-96 bg-darkBrown text-white overflow-hidden relative mx-auto;
+    @apply rounded-2xl block w-full max-w-[350px] min-w-[280px]   h-96 bg-darkBrown text-white overflow-hidden relative mx-auto;
 
     .content_container {
         @apply px-4;

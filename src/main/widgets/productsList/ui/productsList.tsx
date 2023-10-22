@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import { productService, IProduct, IProductData, IFiltrationParams } from '~shared/api';
 import { useFilters, useFiltersSelector } from '~entities/filters';
+import ChangeSorting from '~features/changeSorting/ui/ChangeSorting';
 
 interface ProductListProps {
     initProductsData: IProductData;
@@ -104,6 +105,7 @@ const ProductList: FC<ProductListProps> = (props) => {
 
     return (
         <div className={styles.product_list__content}>
+            <ChangeSorting />
             <ul className={styles.product_list}>{mapProducts}</ul>
             <Pagination totalCount={totalCount} onOnePage={onOnePage} length={7} />
         </div>
