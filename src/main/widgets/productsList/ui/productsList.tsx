@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 import styles from './productList.module.scss';
 import Link from 'next/link';
@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Pagination from './pagination/Pagination';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
-import { productService, IProduct, IProductData, IFiltrationParams } from '~shared/api';
+import { productService, IProduct, IProductData } from '~shared/api';
 import { useFilters, useFiltersSelector } from '~entities/filters';
 import ChangeSorting from '~features/changeSorting/ui/ChangeSorting';
 
@@ -21,10 +21,12 @@ const ProductList: FC<ProductListProps> = (props) => {
     const filtersState = useFiltersSelector();
     const router = useRouter();
     const { getActiveFilters, setInitFilters } = useFilters();
+    const urlDataInstalled = useRef(false);
+    const [isInitCall, setIsInitCall] = useState(true);
+    const [filtersIsChange, setFiltersIsChange] = useState(false);
+
     const activeFilters = getActiveFilters();
-
     let routerPage = Number(router.query.page);
-
     const haveAnyFilters = !!Object.values(activeFilters).length;
 
     const { data: productsData, refetch } = useQuery({
@@ -40,53 +42,52 @@ const ProductList: FC<ProductListProps> = (props) => {
         },
     });
 
-    const [canRefetch, setCanRefetch] = useState(false);
-    const IsInitFiltersSet = useRef(false);
-
-    const refetchWithStartFilters = () => {
-        const query = { ...router.query };
-        delete query.page;
-
-        // запрос за страницей отправиться только после редиректа и разрешит изменение страницы после уже пришедшей страницы
-        router
-            .push(
-                {
-                    pathname: '/shop/1',
-                    query,
-                },
-                undefined,
-                { shallow: true }
-            )
-            .then(() => {
-                refetch().then(() => {
-                    setCanRefetch(true);
-                });
-            });
-    };
-
     useEffect(() => {
-        if (haveAnyFilters && !IsInitFiltersSet) {
-            refetchWithStartFilters();
-        }
-        if (IsInitFiltersSet && router.isReady) {
-            refetch().then(() => {
-                setCanRefetch(true);
-            });
-        }
-    }, [filtersState]);
-
-    useEffect(() => {
-        if (haveAnyFilters && canRefetch) {
+        if (haveAnyFilters && !filtersIsChange) {
             refetch();
+        }
+
+        if (router.isReady && isInitCall) {
+            setIsInitCall(false);
+            console.log('rouiting');
         }
     }, [routerPage]);
 
     useEffect(() => {
-        if (router.isReady && !IsInitFiltersSet.current) {
-            setInitFilters();
-            IsInitFiltersSet.current = true;
+        if (haveAnyFilters) {
+            const query = { ...router.query };
+            delete query.page;
+
+            setFiltersIsChange(true);
+
+            if (isInitCall) {
+                refetch();
+                setFiltersIsChange(false);
+                setIsInitCall(false);
+            } else {
+                router
+                    .replace(
+                        {
+                            pathname: '/shop/1',
+                            query,
+                        },
+                        undefined,
+                        { shallow: true }
+                    )
+                    .then(() => {
+                        refetch();
+                        setFiltersIsChange(false);
+                    });
+            }
         }
-    }, [router.query]);
+    }, [filtersState]);
+
+    useEffect(() => {
+        if (!urlDataInstalled.current && router.isReady) {
+            setInitFilters();
+            urlDataInstalled.current = true;
+        }
+    }, [router.isReady]);
 
     if (!productsData || !productsData.data.length) {
         return (

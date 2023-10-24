@@ -13,7 +13,7 @@ interface IFiltersSlice extends IObjectKeys {
     brand: string | null;
     price: number[] | null;
 
-    sorting: SortingParams;
+    sorting: SortingParams | null;
 }
 
 const initialState: IFiltersSlice = {
@@ -22,12 +22,13 @@ const initialState: IFiltersSlice = {
     colors: null,
     brand: null,
     price: null,
-    sorting: SortingParams.HIGHT_PRICE,
+    sorting: null,
 };
 
 const filterSlice = createSlice({
     initialState,
     name: 'filters',
+
     reducers: {
         setTerm: (state, action: PayloadAction<string>) => {
             state.term = action.payload;
@@ -35,6 +36,10 @@ const filterSlice = createSlice({
 
         changeSorting: (state, action: PayloadAction<SortingParams>) => {
             state.sorting = action.payload;
+        },
+
+        changeSizes: (state, action: PayloadAction<number[]>) => {
+            state.sizes = action.payload;
         },
 
         setInitialFilters: (state, action: PayloadAction<IFiltrationParams>) => {

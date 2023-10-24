@@ -8,12 +8,26 @@ const useFilters = () => {
     const filterSelector = useFiltersSelector();
     const router = useRouter();
 
-    const setTerm = (value: string) => {
-        router.query.term = value;
+    const setQueryUrl = (value: any, field: string) => {
+        router.query[field] = value;
         router.push(router, undefined, {
             shallow: true,
         });
+    };
+
+    // slice changers
+    const setTerm = (value: string) => {
+        setQueryUrl(value, 'term');
         AppDispatch(filtersActions.setTerm(value));
+    };
+
+    const changeSorting = (param: SortingParams) => {
+        setQueryUrl(param, 'sorting');
+        AppDispatch(filtersActions.changeSorting(param));
+    };
+    const changeSizes = (params: number[]) => {
+        setQueryUrl(params, 'sizes');
+        AppDispatch(filtersActions.changeSizes(params));
     };
 
     const getActiveFilters = () => {
@@ -21,8 +35,10 @@ const useFilters = () => {
         Object.keys(filterSelector).forEach((key) => {
             // @ts-ignore
             if (filterSelector[key] && filterSelector[key] !== null) {
-                // @ts-ignore
-                filters[key] = filterSelector[key];
+                if (key !== 'updated') {
+                    // @ts-ignore
+                    filters[key] = filterSelector[key];
+                }
             }
         });
 
@@ -36,7 +52,14 @@ const useFilters = () => {
         // FIXME: переделать так чтобы поля брались из слайса
         Object.keys(query).forEach((key) => {
             if (key === 'term') queryParams.term = query[key];
-            if (key === 'sizes') queryParams.sizes = query[key];
+            if (key === 'sizes')
+                queryParams.sizes = (() => {
+                    if (typeof query[key] === 'string') {
+                        return [Number(query[key])];
+                    } else {
+                        return query[key];
+                    }
+                })();
             if (key === 'colors') queryParams.colors = query[key];
             if (key === 'brand') queryParams.brand = query[key];
             if (key === 'price') queryParams.price = query[key];
@@ -46,14 +69,12 @@ const useFilters = () => {
         AppDispatch(filtersActions.setInitialFilters(queryParams));
     };
 
-    const changeSorting = (param: SortingParams) => {
-        AppDispatch(filtersActions.changeSorting(param));
-    };
     return {
         setTerm,
         getActiveFilters,
         setInitFilters,
         changeSorting,
+        changeSizes,
     };
 };
 

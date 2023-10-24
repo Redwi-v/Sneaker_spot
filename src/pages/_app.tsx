@@ -38,6 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
                         controlOutline: theme.colors['beige'],
                         colorText: theme.colors['white'],
                         colorTextQuaternary: theme.colors['white'],
+                        colorBgElevated: theme.colors['brown'],
                     },
                 },
             }}

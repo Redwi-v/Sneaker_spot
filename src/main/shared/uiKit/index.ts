@@ -1,3 +1,4 @@
-import Selection from './ui/Selection';
+import Selection from './Selection/ui/Selection';
+import MultipleSelection from './multipleSelection/ui/MultipleSelection';
 
-export { Selection };
+export { Selection, MultipleSelection };

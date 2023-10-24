@@ -1,3 +1,11 @@
 .filters {
-    @apply border-r border-orange min-h-full px-4;
+    @apply border-r border-orange min-h-full px-4 min-w-[210px] w-60;
+
+    .title {
+        @apply text-xl font-bold text-darkBrown mb-1;
+    }
+
+    .filter_block {
+        @apply mb-4;
+    }
 }

@@ -12,11 +12,12 @@ interface ISelectOption {
 interface SelectionProps {
     options: ISelectOption[];
     defaultValue: string;
+    value: any;
     handleChange: (value: string) => void;
 }
 
 const Selection: FC<SelectionProps> = (props) => {
-    const { options, defaultValue, handleChange } = props;
+    const { options, defaultValue, value, handleChange } = props;
 
     return (
         <Select
@@ -25,6 +26,7 @@ const Selection: FC<SelectionProps> = (props) => {
             popupClassName={styles.poopup}
             className={styles.select}
             rootClassName={styles.select_btn}
+            value={value || defaultValue}
             dropdownStyle={{
                 fontSize: '40px',
             }}

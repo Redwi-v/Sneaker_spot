@@ -1,10 +1,9 @@
 import styles from './productsSearchForm.module.scss';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import React, { FC, useEffect } from 'react';
 import Image from 'next/image';
 import { useFilters, useFiltersSelector } from '~entities/filters';
-import { useRouter } from 'next/router';
 
 interface ISearchInput {
     searchInput: string;
@@ -22,7 +21,7 @@ const ProductsSearchForm: FC<ProductsSearchFormProps> = (props) => {
 
     useEffect(() => {
         if (getValues('searchInput')) return;
-        setValue('searchInput', term);
+        setValue('searchInput', term || '');
     }, [term]);
 
     const [fucus, setFocus] = React.useState(false);

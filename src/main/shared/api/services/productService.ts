@@ -47,13 +47,21 @@ interface IColor {
 
 class ProductService {
     getPage = async (page: number, take: number, filtrationParams?: IFiltrationParams): Promise<IProductData | undefined> => {
+        const sortingParam = filtrationParams?.sorting;
+        delete filtrationParams?.sorting;
+
+        const params: any = {
+            page,
+            take,
+            filtrationParams,
+        };
+
+        if (sortingParam !== SortingParams.RATING) {
+            params.sorting = sortingParam;
+        }
+
         const { data } = await axiosInstance.get('/product/products/', {
-            params: {
-                page,
-                take,
-                filtrationParams,
-                sorting: filtrationParams?.sorting,
-            },
+            params,
         });
 
         return data;

@@ -4,6 +4,7 @@ import { Selection } from '~shared/uiKit';
 import sortingList from '../constants/constants';
 import { useFilters } from '~entities/filters';
 import { useFiltersSelector } from '~entities/filters';
+import { SortingParams } from '~shared/api';
 
 interface ChangeSortingProps {}
 const ChangeSorting: FC<ChangeSortingProps> = (props) => {
@@ -18,7 +19,7 @@ const ChangeSorting: FC<ChangeSortingProps> = (props) => {
         });
     }
 
-    let defaultValue = 'DEFAULT';
+    let defaultValue = SortingParams.RATING;
     sortingList.forEach((item) => {
         if (item.key === sorting) {
             defaultValue = item.key;
@@ -26,7 +27,7 @@ const ChangeSorting: FC<ChangeSortingProps> = (props) => {
     });
 
     const {} = props;
-    return <Selection handleChange={handleChange} options={sortingList} defaultValue={defaultValue} />;
+    return <Selection handleChange={handleChange} options={sortingList} defaultValue={defaultValue} value={sorting} />;
 };
 
 export default ChangeSorting;
