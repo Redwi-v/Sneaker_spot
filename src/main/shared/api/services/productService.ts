@@ -45,6 +45,9 @@ interface IColor {
     normalImages: string[];
 }
 
+type colors = { colorName: string; colorCode: string }[];
+type brands = { name: string }[];
+
 class ProductService {
     getPage = async (page: number, take: number, filtrationParams?: IFiltrationParams): Promise<IProductData | undefined> => {
         const sortingParam = filtrationParams?.sorting;
@@ -64,6 +67,15 @@ class ProductService {
             params,
         });
 
+        return data;
+    };
+
+    getColors = async () => {
+        const { data } = await axiosInstance.get<colors>('/product/colors');
+        return data;
+    };
+    getBrands = async () => {
+        const { data } = await axiosInstance.get<brands>('/product/brands');
         return data;
     };
 }

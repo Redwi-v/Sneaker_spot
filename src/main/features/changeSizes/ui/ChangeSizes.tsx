@@ -12,13 +12,13 @@ for (let i = 35; i < 49; i++) {
 }
 
 interface ChangeSizesProps {
-    changeSizesAction: (params: number[]) => void;
-    defaultValues?: number[];
+    changeSizesAction: (params: number[] | string[]) => void;
+    defaultValues?: number[] | string[];
 }
 const ChangeSizes: FC<ChangeSizesProps> = (props) => {
     const { defaultValues, changeSizesAction } = props;
 
-    const handleChange = (values: number[]) => {
+    const handleChange = (values: number[] | string[]) => {
         changeSizesAction(values);
     };
 

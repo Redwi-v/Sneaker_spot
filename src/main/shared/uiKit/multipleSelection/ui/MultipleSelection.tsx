@@ -3,10 +3,10 @@ import { Select } from 'antd';
 import type { SelectProps } from 'antd';
 
 interface MultipleSelectionProps {
-    handleChange: (value: number[]) => void;
+    handleChange: (value: number[] | string[]) => void;
     options: SelectProps['options'];
     placeholder?: string;
-    defaultValue?: number[];
+    defaultValue?: number[] | string[];
 }
 
 const MultipleSelection: React.FC<MultipleSelectionProps> = (props) => {

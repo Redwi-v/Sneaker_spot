@@ -21,13 +21,28 @@ const useFilters = () => {
         AppDispatch(filtersActions.setTerm(value));
     };
 
+    const changeColors = (colorNames: string[]) => {
+        router.query.colors = colorNames;
+
+        router.push(router, undefined, {
+            shallow: true,
+        });
+
+        AppDispatch(filtersActions.changeColors(colorNames));
+    };
+
     const changeSorting = (param: SortingParams) => {
         setQueryUrl(param, 'sorting');
         AppDispatch(filtersActions.changeSorting(param));
     };
-    const changeSizes = (params: number[]) => {
+    const changeSizes = (params: number[] | string[]) => {
         setQueryUrl(params, 'sizes');
         AppDispatch(filtersActions.changeSizes(params));
+    };
+
+    const changeBrands = (brands: string[] | number[]) => {
+        setQueryUrl(brands, 'brands');
+        AppDispatch(filtersActions.changeBrands(brands));
     };
 
     const getActiveFilters = () => {
@@ -60,8 +75,9 @@ const useFilters = () => {
                         return query[key];
                     }
                 })();
-            if (key === 'colors') queryParams.colors = query[key];
-            if (key === 'brand') queryParams.brand = query[key];
+
+            if (key === 'colors') queryParams.colors = Array.isArray(query[key]) ? query[key] : [query[key]];
+            if (key === 'brand') queryParams.brand = Array.isArray(query[key]) ? query[key] : [query[key]];
             if (key === 'price') queryParams.price = query[key];
             if (key === 'sorting') queryParams.sorting = query[key];
         });
@@ -75,6 +91,8 @@ const useFilters = () => {
         setInitFilters,
         changeSorting,
         changeSizes,
+        changeColors,
+        changeBrands,
     };
 };
 

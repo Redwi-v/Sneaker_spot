@@ -49,7 +49,6 @@ const ProductList: FC<ProductListProps> = (props) => {
 
         if (router.isReady && isInitCall) {
             setIsInitCall(false);
-            console.log('rouiting');
         }
     }, [routerPage]);
 

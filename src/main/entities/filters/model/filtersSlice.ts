@@ -8,9 +8,9 @@ interface IObjectKeys {
 
 interface IFiltersSlice extends IObjectKeys {
     term: string | null;
-    sizes: number[] | null;
-    colors: number[] | null;
-    brand: string | null;
+    sizes: number[] | null | string[];
+    colors: string[] | null;
+    brands: string[] | null | number[];
     price: number[] | null;
 
     sorting: SortingParams | null;
@@ -20,7 +20,7 @@ const initialState: IFiltersSlice = {
     term: null,
     sizes: null,
     colors: null,
-    brand: null,
+    brands: null,
     price: null,
     sorting: null,
 };
@@ -34,12 +34,20 @@ const filterSlice = createSlice({
             state.term = action.payload;
         },
 
+        changeColors: (state, action: PayloadAction<string[]>) => {
+            state.colors = action.payload;
+        },
+
         changeSorting: (state, action: PayloadAction<SortingParams>) => {
             state.sorting = action.payload;
         },
 
-        changeSizes: (state, action: PayloadAction<number[]>) => {
+        changeSizes: (state, action: PayloadAction<number[] | string[]>) => {
             state.sizes = action.payload;
+        },
+
+        changeBrands: (state, action: PayloadAction<string[] | number[]>) => {
+            state.brands = action.payload;
         },
 
         setInitialFilters: (state, action: PayloadAction<IFiltrationParams>) => {

@@ -1,0 +1,17 @@
+.optionColor {
+    @apply w-3 h-3 block rounded-full -mb-[1px];
+}
+
+.optionWrapper {
+    @apply flex items-center gap-2;
+}
+
+.tag {
+    span {
+        color: inherit !important;
+    }
+
+    svg {
+        color: inherit !important;
+    }
+}
