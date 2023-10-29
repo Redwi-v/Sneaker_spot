@@ -40,6 +40,11 @@ const useFilters = () => {
         AppDispatch(filtersActions.changeSizes(params));
     };
 
+    const changePrice = (value: number[]) => {
+        setQueryUrl(value, 'price');
+        AppDispatch(filtersActions.changePrice(value));
+    };
+
     const changeBrands = (brands: string[] | number[]) => {
         setQueryUrl(brands, 'brands');
         AppDispatch(filtersActions.changeBrands(brands));
@@ -93,6 +98,7 @@ const useFilters = () => {
         changeSizes,
         changeColors,
         changeBrands,
+        changePrice,
     };
 };
 

@@ -70,6 +70,16 @@ class ProductService {
         return data;
     };
 
+    getProductById = async (id: number): Promise<IProduct> => {
+        const { data } = await axiosInstance.get('product/product/', {
+            params: {
+                id,
+            },
+        });
+
+        return data;
+    };
+
     getColors = async () => {
         const { data } = await axiosInstance.get<colors>('/product/colors');
         return data;

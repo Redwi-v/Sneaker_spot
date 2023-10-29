@@ -34,6 +34,10 @@ const filterSlice = createSlice({
             state.term = action.payload;
         },
 
+        changePrice: (state, action: PayloadAction<number[]>) => {
+            state.price = action.payload;
+        },
+
         changeColors: (state, action: PayloadAction<string[]>) => {
             state.colors = action.payload;
         },

@@ -27,13 +27,10 @@ body::-webkit-scrollbar-thumb {
 body {
     @apply text-blue;
 }
+.ant-input-number-handler-wrap {
+    display: none !important;
+}
 
-// .ant-select-selector {
-//     @apply bg-brown  hover:border-yellow focus:border-yellow border-yellow #{!important};
-// }
-// .ant-select-item-option-active {
-//     @apply bg-darkBrown #{!important};
-// }
-
-// .ant-select-item-option-active:hover {
-// }
+.container {
+    padding: 0 15px;
+}

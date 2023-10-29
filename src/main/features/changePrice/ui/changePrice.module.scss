@@ -1,0 +1,10 @@
+.input {
+    @apply w-20;
+    input {
+        color: #fff !important;
+    }
+}
+.bottom {
+    display: flex;
+    justify-content: space-between;
+}

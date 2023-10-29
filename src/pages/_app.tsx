@@ -9,18 +9,6 @@ import { theme } from '../../tailwind.config';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-// brown: '#f09958',
-// darkBrown: '#6D2518',
-// lightBrown: '#863426',
-
-// orange: '#de7b27',
-// darkOrange: '#ed772f',
-// yellow: '#f2c547',
-// beige: '#faddc4',
-// white: '#fff',
-// lightYellow: '#fbecc6',
-// blue: '#211e3b',
-
 export default function App({ Component, pageProps }: AppProps) {
     const [queryClient] = React.useState(() => new QueryClient());
 
@@ -40,6 +28,16 @@ export default function App({ Component, pageProps }: AppProps) {
                         colorTextQuaternary: theme.colors['white'],
                         colorBgElevated: theme.colors['brown'],
                     },
+                    InputNumber: {
+                        // hoverBorderColor: rgb(255, 64, 64),
+                        controlOutline: theme.colors['brown'],
+                    },
+                },
+
+                token: {
+                    colorPrimary: theme.colors['lightBrown'],
+                    colorBgBase: theme.colors['orange'],
+                    // colorTextBase: theme.colors['white'],
                 },
             }}
         >
